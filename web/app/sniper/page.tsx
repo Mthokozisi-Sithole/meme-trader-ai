@@ -571,7 +571,7 @@ export default function SniperPage() {
  </div>
 
  {/* Stats row */}
- <div className="grid grid-cols-4 gap-2">
+ <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
  {[
  { label: "Tokens Tracked", value: stats.total, color: "var(--text-primary)" },
  { label: "Snipe Ops", value: stats.snipeOps, color: "var(--purple)" },

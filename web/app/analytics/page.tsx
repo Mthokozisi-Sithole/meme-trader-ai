@@ -290,6 +290,7 @@ function NarrativeTable({ data }: { data: NarrativePerf[] }) {
  const maxScore = Math.max(...data.map((d) => d.avg_score), 1);
 
  return (
+ <div className="overflow-x-auto">
  <table className="w-full">
  <thead>
  <tr style={{ borderBottom: "1px solid var(--border)" }}>
@@ -354,6 +355,7 @@ function NarrativeTable({ data }: { data: NarrativePerf[] }) {
  })}
  </tbody>
  </table>
+ </div>
  );
 }
 
