@@ -31,6 +31,18 @@
 html, body {
   background: var(--bg-base);
   color: var(--text-primary);
+  overflow-x: hidden;
+}
+
+/* Mobile touch targets */
+@media (max-width: 640px) {
+  button, a {
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+  }
+  /* Exception: inline text links */
+  p a, li a { min-height: unset; display: inline; }
 }
 
 /* Flat scrollbar */

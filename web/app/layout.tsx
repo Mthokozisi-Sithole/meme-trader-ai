@@ -12,7 +12,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
  <html lang="en" className="dark">
  <body className="min-h-screen antialiased" style={{ background: "var(--bg-base)", color: "var(--text-primary)" }}>
  <Nav />
- <main className="max-w-[1600px] mx-auto px-4 pb-12">{children}</main>
+ <main className="max-w-[1600px] mx-auto px-3 sm:px-4 pb-12">{children}</main>
  </body>
  </html>
  );
