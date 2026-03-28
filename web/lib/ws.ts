@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 
+// WebSocket connects to the backend directly. In development, the backend
+// is on port 8000. NEXT_PUBLIC_WS_URL can override (e.g. in production).
 const WS_BASE =
-  (process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000")
-    .replace(/^http/, "ws");
+  typeof window !== "undefined"
+    ? (process.env.NEXT_PUBLIC_WS_URL ?? `ws://${window.location.hostname}:8000`)
+    : "ws://localhost:8000";
 
 export type WsStatus = "connecting" | "connected" | "reconnecting" | "error";
 

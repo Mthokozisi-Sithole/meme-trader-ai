@@ -1,6 +1,8 @@
 import type { Coin, Signal, Alert, DexToken } from "@/types";
 
-const BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+// All API calls go through the Next.js proxy (/api/*) so the browser
+// only ever needs to reach port 3000 — no direct access to port 8000 needed.
+const BASE = "/api";
 
 async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
   const res = await fetch(`${BASE}${path}`, {

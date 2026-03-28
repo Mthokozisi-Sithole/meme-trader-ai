@@ -92,7 +92,9 @@ services:
     ports:
       - "3000:3000"
     environment:
-      NEXT_PUBLIC_API_URL: http://localhost:8000
+      # Internal proxy target — Next.js rewrites /api/* → http://api:8000/*
+      # The browser never calls port 8000 directly; everything goes through :3000
+      INTERNAL_API_URL: http://api:8000
     depends_on:
       - api
 
