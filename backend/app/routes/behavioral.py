@@ -104,6 +104,6 @@ async def behavioral_summary(
 
     return {
         "total_active": len(all_signals),
-        "counts_by_pattern": counts_by_pattern,
-        "counts_by_severity": counts_by_severity,
+        "by_pattern": counts_by_pattern,
+        "by_severity": counts_by_severity,
     }

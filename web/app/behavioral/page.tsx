@@ -239,14 +239,14 @@ export default function BehavioralPage() {
                         className="text-xs font-semibold"
                         style={{
                           color:
-                            s.confidence >= 0.8
+                            s.confidence >= 80
                               ? "var(--green)"
-                              : s.confidence >= 0.5
+                              : s.confidence >= 50
                               ? "var(--yellow)"
                               : "var(--text-secondary)",
                         }}
                       >
-                        {(s.confidence * 100).toFixed(0)}%
+                        {s.confidence.toFixed(0)}%
                       </span>
                     </td>
                     <td className="px-3 py-2">

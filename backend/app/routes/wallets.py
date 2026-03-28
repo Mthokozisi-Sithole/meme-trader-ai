@@ -13,7 +13,7 @@ from app.services.wallet_classifier import WalletMetrics, classify_wallet
 router = APIRouter(tags=["wallets"])
 
 
-@router.get("/", response_model=List[WalletOut])
+@router.get("", response_model=List[WalletOut])
 async def list_wallets(
     chain: Optional[str] = None,
     wallet_type: Optional[str] = None,

@@ -62,7 +62,7 @@ function EventsTable({ events }: { events: LiquidityEvent[] }) {
   if (events.length === 0) {
     return (
       <div className="text-center py-12 text-sm" style={{ color: "var(--text-dim)" }}>
-        No events found.
+        No liquidity events yet — events are recorded as the DEX worker detects LP add/remove/migrate activity.
       </div>
     );
   }
