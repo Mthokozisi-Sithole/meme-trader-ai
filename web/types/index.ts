@@ -142,3 +142,81 @@ export interface Alert {
   is_read: boolean;
   created_at: string;
 }
+
+export interface Wallet {
+  id: number;
+  address: string;
+  chain: string;
+  wallet_type: "smart_money" | "dev" | "bot" | "whale" | "sniper" | "dumper" | "retail" | "unknown";
+  label: string | null;
+  quality_score: number;
+  win_rate: number | null;
+  total_txns: number;
+  rug_exits: number;
+  times_early_buyer: number;
+  is_dev_wallet: boolean;
+  is_bot: boolean;
+  is_coordinated: boolean;
+  flagged: boolean;
+  total_realized_pnl_usd: number | null;
+  avg_hold_hours: number | null;
+  last_active: string;
+  created_at: string;
+}
+
+export interface WalletTransaction {
+  id: number;
+  wallet_address: string;
+  token_address: string;
+  token_symbol: string | null;
+  chain: string;
+  action: "buy" | "sell" | "add_lp" | "remove_lp" | "transfer";
+  amount_usd: number | null;
+  token_amount: number | null;
+  price_usd: number | null;
+  is_first_buy: boolean;
+  is_smart_money: boolean;
+  is_sniper: boolean;
+  tx_hash: string | null;
+  created_at: string;
+}
+
+export interface BehavioralSignal {
+  id: number;
+  token_address: string;
+  token_symbol: string | null;
+  chain: string;
+  pattern_type: string;
+  signal_label: string;
+  confidence: number;
+  severity: "info" | "warning" | "alert" | "critical";
+  supporting_metrics: Record<string, unknown> | null;
+  contributing_factors: Record<string, unknown> | null;
+  fusion_score: number;
+  is_active: boolean;
+  created_at: string;
+  expires_at: string | null;
+}
+
+export interface LiquidityEvent {
+  id: number;
+  token_address: string;
+  token_symbol: string | null;
+  chain: string;
+  event_type: "add" | "remove" | "migrate" | "lock" | "unlock";
+  amount_usd: number | null;
+  pct_change: number | null;
+  wallet_address: string | null;
+  is_dev_wallet: boolean;
+  is_suspicious: boolean;
+  risk_score: number;
+  risk_flags: Record<string, unknown> | null;
+  tx_hash: string | null;
+  created_at: string;
+}
+
+export interface BehavioralSummary {
+  by_pattern: Record<string, number>;
+  by_severity: Record<string, number>;
+  total_active: number;
+}

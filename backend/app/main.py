@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
 from app.routes import health, coins, signals, alerts, snipes, market, ws
+from app.routes import wallets, behavioral, liquidity
 
 
 @asynccontextmanager
@@ -35,3 +36,6 @@ app.include_router(alerts.router, prefix="/alerts")
 app.include_router(snipes.router, prefix="/snipes")
 app.include_router(market.router, prefix="/market")
 app.include_router(ws.router)
+app.include_router(wallets.router, prefix="/wallets")
+app.include_router(behavioral.router, prefix="/behavioral")
+app.include_router(liquidity.router, prefix="/liquidity")

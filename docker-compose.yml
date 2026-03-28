@@ -85,6 +85,20 @@ services:
       - ./backend:/app
     command: python -m app.worker.dex_tasks
 
+  behavioral-worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/memetrader
+      REDIS_URL: redis://redis:6379/0
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+    command: python -m app.worker.behavioral_worker
+
   web:
     build:
       context: ./web

@@ -1,4 +1,4 @@
-import type { Coin, Signal, Alert, DexToken } from "@/types";
+import type { Coin, Signal, Alert, DexToken, Wallet, WalletTransaction, BehavioralSignal, BehavioralSummary, LiquidityEvent } from "@/types";
 
 // All API calls go through the Next.js proxy (/api/*) so the browser
 // only ever needs to reach port 3000 — no direct access to port 8000 needed.
@@ -111,5 +111,47 @@ export const api = {
       apiFetch<{ range: string; count: number }[]>("/market/score-distribution"),
     narrativePerformance: () =>
       apiFetch<NarrativePerf[]>("/market/narrative-performance"),
+  },
+  wallets: {
+    list: (params?: { chain?: string; wallet_type?: string; flagged?: boolean; limit?: number }) => {
+      const q = new URLSearchParams();
+      if (params?.chain) q.set("chain", params.chain);
+      if (params?.wallet_type) q.set("wallet_type", params.wallet_type);
+      if (params?.flagged != null) q.set("flagged", String(params.flagged));
+      if (params?.limit != null) q.set("limit", String(params.limit));
+      const qs = q.toString();
+      return apiFetch<Wallet[]>(`/wallets${qs ? `?${qs}` : ""}`);
+    },
+    get: (address: string) => apiFetch<Wallet>(`/wallets/${address}`),
+    transactions: (address: string) => apiFetch<WalletTransaction[]>(`/wallets/${address}/transactions`),
+  },
+  behavioral: {
+    signals: (params?: { token_address?: string; chain?: string; pattern_type?: string; severity?: string; limit?: number }) => {
+      const q = new URLSearchParams();
+      if (params?.token_address) q.set("token_address", params.token_address);
+      if (params?.chain) q.set("chain", params.chain);
+      if (params?.pattern_type) q.set("pattern_type", params.pattern_type);
+      if (params?.severity) q.set("severity", params.severity);
+      if (params?.limit != null) q.set("limit", String(params.limit));
+      const qs = q.toString();
+      return apiFetch<BehavioralSignal[]>(`/behavioral/signals${qs ? `?${qs}` : ""}`);
+    },
+    tokenSignals: (tokenAddress: string) => apiFetch<BehavioralSignal[]>(`/behavioral/signals/${tokenAddress}`),
+    summary: () => apiFetch<BehavioralSummary>("/behavioral/summary"),
+    analyze: (tokenAddress: string, chain: string) =>
+      apiFetch<BehavioralSignal[]>(`/behavioral/analyze/${tokenAddress}?chain=${chain}`, { method: "POST" }),
+  },
+  liquidity: {
+    events: (params?: { token_address?: string; chain?: string; is_suspicious?: boolean; limit?: number }) => {
+      const q = new URLSearchParams();
+      if (params?.token_address) q.set("token_address", params.token_address);
+      if (params?.chain) q.set("chain", params.chain);
+      if (params?.is_suspicious != null) q.set("is_suspicious", String(params.is_suspicious));
+      if (params?.limit != null) q.set("limit", String(params.limit));
+      const qs = q.toString();
+      return apiFetch<LiquidityEvent[]>(`/liquidity/events${qs ? `?${qs}` : ""}`);
+    },
+    suspicious: () => apiFetch<LiquidityEvent[]>("/liquidity/suspicious"),
+    tokenEvents: (tokenAddress: string) => apiFetch<LiquidityEvent[]>(`/liquidity/events/${tokenAddress}`),
   },
 };

@@ -13,6 +13,9 @@ const LINKS = [
   { href: "/sniper", label: "Sniper" },
   { href: "/analytics", label: "Analytics" },
   { href: "/tokens", label: "DEX Tokens" },
+  { href: "/wallets", label: "Wallets" },
+  { href: "/behavioral", label: "Behavioral" },
+  { href: "/liquidity", label: "Liquidity" },
   { href: "/coins", label: "Coins" },
   { href: "/alerts", label: "Alerts" },
 ];
