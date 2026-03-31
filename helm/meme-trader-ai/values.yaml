@@ -4,13 +4,13 @@ global:
 
 image:
   api:
-    repository: meme-trader-ai-api
+    repository: ghcr.io/mthokozisi-sithole/meme-trader-ai-api
     tag: "latest"
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
   web:
-    repository: meme-trader-ai-web
+    repository: ghcr.io/mthokozisi-sithole/meme-trader-ai-web
     tag: "latest"
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
 replicaCount:
   api: 2
