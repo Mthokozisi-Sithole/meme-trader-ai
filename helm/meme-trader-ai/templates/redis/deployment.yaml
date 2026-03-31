@@ -27,6 +27,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      restartPolicy: Always
       serviceAccountName: {{ include "meme-trader-ai.serviceAccountName" . }}
       containers:
         - name: redis
