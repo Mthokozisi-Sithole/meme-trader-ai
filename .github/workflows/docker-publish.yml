@@ -13,9 +13,6 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  # ghcr.io/<owner>/<repo>-api and ghcr.io/<owner>/<repo>-web
-  API_IMAGE: ghcr.io/${{ github.repository_owner }}/meme-trader-ai-api
-  WEB_IMAGE: ghcr.io/${{ github.repository_owner }}/meme-trader-ai-web
 
 jobs:
   build-api:
@@ -33,6 +30,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Set lowercase image name
+        run: echo "API_IMAGE=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/meme-trader-ai-api" >> $GITHUB_ENV
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -58,7 +58,7 @@ jobs:
             # semver tags: v1.2.3 → 1.2.3, 1.2, 1
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
-            # branch name on non-default branches (e.g. feature/foo → feature-foo)
+            # branch name on non-default branches
             type=ref,event=branch,enable=${{ github.ref != format('refs/heads/{0}', github.event.repository.default_branch) }}
             # PR number on pull requests
             type=ref,event=pr
@@ -91,6 +91,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Set lowercase image name
+        run: echo "WEB_IMAGE=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/meme-trader-ai-web" >> $GITHUB_ENV
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -136,26 +139,31 @@ jobs:
     if: github.event_name != 'pull_request'
 
     steps:
+      - name: Set lowercase image names
+        run: |
+          echo "API_IMAGE=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/meme-trader-ai-api" >> $GITHUB_ENV
+          echo "WEB_IMAGE=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/meme-trader-ai-web" >> $GITHUB_ENV
+
       - name: Write job summary
         run: |
           echo "## Docker Images Published" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Image | Tags |" >> $GITHUB_STEP_SUMMARY
+          echo "| Image | Tag |" >> $GITHUB_STEP_SUMMARY
           echo "|---|---|" >> $GITHUB_STEP_SUMMARY
           echo "| \`${{ env.API_IMAGE }}\` | \`${{ needs.build-api.outputs.version }}\` |" >> $GITHUB_STEP_SUMMARY
           echo "| \`${{ env.WEB_IMAGE }}\` | \`${{ needs.build-web.outputs.version }}\` |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Pull commands" >> $GITHUB_STEP_SUMMARY
           echo '```bash' >> $GITHUB_STEP_SUMMARY
-          echo "docker pull ${{ env.API_IMAGE }}:${{ needs.build-api.outputs.version }}" >> $GITHUB_STEP_SUMMARY
-          echo "docker pull ${{ env.WEB_IMAGE }}:${{ needs.build-web.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "docker pull ${API_IMAGE}:${{ needs.build-api.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "docker pull ${WEB_IMAGE}:${{ needs.build-web.outputs.version }}" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Deploy to Kubernetes with Helm" >> $GITHUB_STEP_SUMMARY
           echo '```bash' >> $GITHUB_STEP_SUMMARY
           echo "helm upgrade --install meme-trader-ai ./helm/meme-trader-ai \\" >> $GITHUB_STEP_SUMMARY
-          echo "  --set image.api.repository=${{ env.API_IMAGE }} \\" >> $GITHUB_STEP_SUMMARY
+          echo "  --set image.api.repository=${API_IMAGE} \\" >> $GITHUB_STEP_SUMMARY
           echo "  --set image.api.tag=${{ needs.build-api.outputs.version }} \\" >> $GITHUB_STEP_SUMMARY
-          echo "  --set image.web.repository=${{ env.WEB_IMAGE }} \\" >> $GITHUB_STEP_SUMMARY
+          echo "  --set image.web.repository=${WEB_IMAGE} \\" >> $GITHUB_STEP_SUMMARY
           echo "  --set image.web.tag=${{ needs.build-web.outputs.version }}" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
