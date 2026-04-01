@@ -143,7 +143,7 @@ function PatternRow({
                 border: `1px solid ${(p.probability_positive_ev) >= 0.6 ? "rgba(0,217,126,0.3)" : "rgba(255,68,102,0.3)"}`,
               }}
             >
-              {(p.probability_positive_ev * 100).toFixed(0)}% P(EV>0)
+              {(p.probability_positive_ev * 100).toFixed(0)}% P(EV&gt;0)
             </span>
           )}
         </td>
